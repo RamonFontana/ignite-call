@@ -34,7 +34,7 @@ export default function Register() {
     resolver: zodResolver(registerFormSchema),
   });
 
-  const router = useRouter()
+  const router = useRouter();
 
   async function handleRegister(data: RegisterFormData) {
     try {
@@ -42,6 +42,8 @@ export default function Register() {
         name: data.name,
         username: data.username,
       });
+
+      await router.push("/register/connect-calendar");
     } catch (err) {
       if (err instanceof AxiosError && err?.response?.data?.message) {
         alert(err.response.data.message);
@@ -99,7 +101,7 @@ export default function Register() {
           )}
         </label>
 
-        <Button>
+        <Button disabled={isSubmitting}>
           Próximo passo
           <ArrowRight />
         </Button>

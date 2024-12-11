@@ -1,0 +1,73 @@
+import { Button, Heading, MultiStep, Text, TextInput } from "@ignite-ui/react";
+import { Container, Header } from "../styles";
+import { ArrowRight, Check } from "phosphor-react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
+import { api } from "@/lib/axios";
+import { AxiosError } from "axios";
+import { AuthError, ConnectBox, ConnectItem } from "./styles";
+import { signIn, useSession } from "next-auth/react";
+
+export default function Register() {
+  const session = useSession();
+  const router = useRouter();
+
+  const hasAuthError = !!router.query.error;
+  const isSignedIn = session.status === "authenticated";
+
+  async function handleConnectCalendar() {
+    await signIn("google");
+  }
+
+  // async function handleRegister(data: RegisterFormData) {}
+
+  return (
+    <Container>
+      <Header>
+        <Heading as="strong">Conecte sua agenda!</Heading>
+        <Text>
+          Conecte seu calendário para verificar automaticamente as horas
+          ocupadas e os novos eventos à medida em que são agendados.
+        </Text>
+
+        <MultiStep size={4} currentStep={1} />
+
+        <ConnectBox>
+          <ConnectItem>
+            <Text>Google Calendar</Text>
+            {isSignedIn ? (
+              <Button disabled>
+                Conectado
+                <Check />
+              </Button>
+            ) : (
+              <Button
+                size="sm"
+                variant="secondary"
+                onClick={handleConnectCalendar}
+              >
+                Conectar
+                <ArrowRight />
+              </Button>
+            )}
+          </ConnectItem>
+
+          {hasAuthError && (
+            <AuthError size="sm">
+              Falha ao se conectar ao Google, verifique se você habilitou as
+              permissões de acesso ao Google Calendar
+            </AuthError>
+          )}
+
+          <Button disabled={!isSignedIn}>
+            Próximo passo
+            <ArrowRight />
+          </Button>
+        </ConnectBox>
+      </Header>
+    </Container>
+  );
+}
