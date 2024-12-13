@@ -1,18 +1,18 @@
-import dayjs from "dayjs";
-import { google } from "googleapis";
-import { prisma } from "./prisma";
+import dayjs from 'dayjs';
+import { google } from 'googleapis';
+import { prisma } from './prisma';
 
 export async function getGoogleOAuthToken(userId: string) {
   const account = await prisma.account.findFirstOrThrow({
     where: {
-      provider: "google",
+      provider: 'google',
       user_id: userId,
     },
   });
 
   const auth = new google.auth.OAuth2(
     process.env.GOOGLE_CLIENT_ID,
-    process.env.GOOGLE_CLIENT_SECRET
+    process.env.GOOGLE_CLIENT_SECRET,
   );
 
   auth.setCredentials({
