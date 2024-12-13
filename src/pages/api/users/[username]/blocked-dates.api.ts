@@ -1,12 +1,12 @@
 // import dayjs from 'dayjs'
-import { NextApiRequest, NextApiResponse } from "next";
-import { prisma } from "../../../../lib/prisma";
+import { NextApiRequest, NextApiResponse } from 'next';
+import { prisma } from '../../../../lib/prisma';
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
-  if (req.method !== "GET") {
+  if (req.method !== 'GET') {
     return res.status(405).end();
   }
 
@@ -14,7 +14,7 @@ export default async function handler(
   const { year, month } = req.query;
 
   if (!year || !month) {
-    return res.status(400).json({ message: "Year or month not specified." });
+    return res.status(400).json({ message: 'Year or month not specified.' });
   }
 
   const user = await prisma.user.findUnique({
@@ -24,7 +24,7 @@ export default async function handler(
   });
 
   if (!user) {
-    return res.status(400).json({ message: "User does not exist." });
+    return res.status(400).json({ message: 'User does not exist.' });
   }
 
   const availableWeekDays = await prisma.userTimeInterval.findMany({
@@ -38,7 +38,7 @@ export default async function handler(
 
   const blockedWeekDays = [0, 1, 2, 3, 4, 5, 6].filter((weekDay) => {
     return !availableWeekDays.some(
-      (availableWeekDay) => availableWeekDay.week_day === weekDay
+      (availableWeekDay) => availableWeekDay.week_day === weekDay,
     );
   });
 

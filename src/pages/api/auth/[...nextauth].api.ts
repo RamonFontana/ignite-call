@@ -1,35 +1,35 @@
-import { PrismaAdapter } from "@/lib/auth/prisma-adapter";
-import { NextApiRequest, NextApiResponse, NextPageContext } from "next";
-import NextAuth, { NextAuthOptions } from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
+import { PrismaAdapter } from '@/lib/auth/prisma-adapter';
+import { NextApiRequest, NextApiResponse, NextPageContext } from 'next';
+import NextAuth, { NextAuthOptions } from 'next-auth';
+import GoogleProvider from 'next-auth/providers/google';
 
 export function buildNextAuthOptions(
-  req: NextApiRequest | NextPageContext["req"],
-  res: NextApiResponse | NextPageContext["res"]
+  req: NextApiRequest | NextPageContext['req'],
+  res: NextApiResponse | NextPageContext['res'],
 ): NextAuthOptions {
   return {
     adapter: PrismaAdapter(req, res),
 
     providers: [
       GoogleProvider({
-        clientId: process.env.GOOGLE_CLIENT_ID ?? "",
-        clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
+        clientId: process.env.GOOGLE_CLIENT_ID ?? '',
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? '',
         profile(profile) {
           return {
             id: profile.sub,
             name: profile.name,
-            username: "",
+            username: '',
             email: profile.email,
             avatar_url: profile.picture,
           };
         },
         authorization: {
           params: {
-            prompt: "consent",
-            access_type: "offline",
-            response_type: "code",
+            prompt: 'consent',
+            access_type: 'offline',
+            response_type: 'code',
             scope:
-              "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/calendar",
+              'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/calendar',
           },
         },
       }),
@@ -38,9 +38,9 @@ export function buildNextAuthOptions(
     callbacks: {
       async signIn({ account }) {
         if (
-          !account?.scope?.includes("https://www.googleapis.com/auth/calendar")
+          !account?.scope?.includes('https://www.googleapis.com/auth/calendar')
         ) {
-          return "http://localhost:3000/register/connect-calendar/?error=permissions";
+          return 'http://localhost:3000/register/connect-calendar/?error=permissions';
         }
 
         return true;

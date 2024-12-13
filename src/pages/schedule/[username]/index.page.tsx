@@ -1,9 +1,9 @@
-import { Avatar, Heading, Text } from "@ignite-ui/react";
-import { Container, UserHeader } from "./styles";
-import { GetStaticPaths, GetStaticProps } from "next";
-import { prisma } from "@/lib/prisma";
-import { ScheduleForm } from "./ScheduleForm";
-import { NextSeo } from "next-seo";
+import { Avatar, Heading, Text } from '@ignite-ui/react';
+import { Container, UserHeader } from './styles';
+import { GetStaticPaths, GetStaticProps } from 'next';
+import { prisma } from '@/lib/prisma';
+import { ScheduleForm } from './ScheduleForm';
+import { NextSeo } from 'next-seo';
 
 interface ScheduleProps {
   name: string;
@@ -32,7 +32,7 @@ export default function Schedule({ avatarUrl, bio, name }: ScheduleProps) {
 export const getStaticPaths: GetStaticPaths = async () => {
   return {
     paths: [],
-    fallback: "blocking",
+    fallback: 'blocking',
   };
 };
 

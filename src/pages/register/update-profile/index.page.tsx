@@ -5,21 +5,20 @@ import {
   MultiStep,
   Text,
   TextArea,
-  TextInput,
-} from "@ignite-ui/react";
-import { ArrowRight } from "phosphor-react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Container, Header } from "../styles";
-import { FormAnnotation, ProfileBox } from "./styles";
-import { useSession } from "next-auth/react";
-import { GetServerSideProps } from "next";
-import { getServerSession } from "next-auth";
-import { buildNextAuthOptions } from "@/pages/api/auth/[...nextauth].api";
-import { api } from "@/lib/axios";
-import { useRouter } from "next/router";
-import { NextSeo } from "next-seo";
+} from '@ignite-ui/react';
+import { ArrowRight } from 'phosphor-react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Container, Header } from '../styles';
+import { FormAnnotation, ProfileBox } from './styles';
+import { useSession } from 'next-auth/react';
+import { GetServerSideProps } from 'next';
+import { getServerSession } from 'next-auth';
+import { buildNextAuthOptions } from '@/pages/api/auth/[...nextauth].api';
+import { api } from '@/lib/axios';
+import { useRouter } from 'next/router';
+import { NextSeo } from 'next-seo';
 
 const updateProfileSchema = z.object({
   bio: z.string(),
@@ -31,7 +30,7 @@ export default function UpdateProfile() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { isSubmitting },
   } = useForm<UpdateProfileData>({
     resolver: zodResolver(updateProfileSchema),
   });
@@ -40,7 +39,7 @@ export default function UpdateProfile() {
   const router = useRouter();
 
   async function handleUpdateProfile(data: UpdateProfileData) {
-    await api.put("/users/profile", {
+    await api.put('/users/profile', {
       bio: data.bio,
     });
 
@@ -73,7 +72,7 @@ export default function UpdateProfile() {
 
           <label>
             <Text size="sm">Sobre você</Text>
-            <TextArea {...register("bio")} />
+            <TextArea {...register('bio')} />
             <FormAnnotation size="sm">
               Fale um pouco sobre você. Isto será exibido em sua página pessoal.
             </FormAnnotation>
@@ -93,7 +92,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getServerSession(
     req,
     res,
-    buildNextAuthOptions(req, res)
+    buildNextAuthOptions(req, res),
   );
 
   return {

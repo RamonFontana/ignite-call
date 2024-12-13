@@ -5,8 +5,8 @@ import {
   MultiStep,
   Text,
   TextInput,
-} from "@ignite-ui/react";
-import { Container, Header } from "../styles";
+} from '@ignite-ui/react';
+import { Container, Header } from '../styles';
 import {
   FormErro,
   IntervalBox,
@@ -14,16 +14,16 @@ import {
   IntervalInputs,
   IntervalItem,
   IntervalsContainer,
-} from "./styles";
-import { ArrowRight } from "phosphor-react";
-import { Controller, useFieldArray, useForm } from "react-hook-form";
-import { z } from "zod";
-import { getWeekDays } from "@/utils/get-week-days";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { convertTimeStringToMinutes } from "@/utils/convert-time-string-to-minutes";
-import { api } from "@/lib/axios";
-import { useRouter } from "next/router";
-import { NextSeo } from "next-seo";
+} from './styles';
+import { ArrowRight } from 'phosphor-react';
+import { Controller, useFieldArray, useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { getWeekDays } from '@/utils/get-week-days';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { convertTimeStringToMinutes } from '@/utils/convert-time-string-to-minutes';
+import { api } from '@/lib/axios';
+import { useRouter } from 'next/router';
+import { NextSeo } from 'next-seo';
 
 const timeIntervalsFormSchema = z.object({
   intervals: z
@@ -33,14 +33,14 @@ const timeIntervalsFormSchema = z.object({
         enabled: z.boolean(),
         startTime: z.string(),
         endTime: z.string(),
-      })
+      }),
     )
     .length(7)
     .transform((intervals) => {
       return intervals.filter((interval) => interval.enabled);
     })
     .refine((intervals) => intervals.length > 0, {
-      message: "Você precisa selecionar pelo menos um dia da semana",
+      message: 'Você precisa selecionar pelo menos um dia da semana',
     })
     .transform((intervals) => {
       return intervals.map((interval) => {
@@ -55,13 +55,13 @@ const timeIntervalsFormSchema = z.object({
       (intervals) => {
         return intervals.every(
           (interval) =>
-            interval.endTimeInMinutes - 60 >= interval.startTimeInMinutes
+            interval.endTimeInMinutes - 60 >= interval.startTimeInMinutes,
         );
       },
       {
         message:
-          "O horário de término deve ser pelo menos 1 hora após o início.",
-      }
+          'O horário de término deve ser pelo menos 1 hora após o início.',
+      },
     ),
 });
 
@@ -79,13 +79,13 @@ export default function TimeIntervals() {
     resolver: zodResolver(timeIntervalsFormSchema),
     defaultValues: {
       intervals: [
-        { weekday: 0, enabled: false, startTime: "08:00", endTime: "18:00" },
-        { weekday: 1, enabled: true, startTime: "08:00", endTime: "18:00" },
-        { weekday: 2, enabled: true, startTime: "08:00", endTime: "18:00" },
-        { weekday: 3, enabled: true, startTime: "08:00", endTime: "18:00" },
-        { weekday: 4, enabled: true, startTime: "08:00", endTime: "18:00" },
-        { weekday: 5, enabled: true, startTime: "08:00", endTime: "18:00" },
-        { weekday: 6, enabled: false, startTime: "08:00", endTime: "18:00" },
+        { weekday: 0, enabled: false, startTime: '08:00', endTime: '18:00' },
+        { weekday: 1, enabled: true, startTime: '08:00', endTime: '18:00' },
+        { weekday: 2, enabled: true, startTime: '08:00', endTime: '18:00' },
+        { weekday: 3, enabled: true, startTime: '08:00', endTime: '18:00' },
+        { weekday: 4, enabled: true, startTime: '08:00', endTime: '18:00' },
+        { weekday: 5, enabled: true, startTime: '08:00', endTime: '18:00' },
+        { weekday: 6, enabled: false, startTime: '08:00', endTime: '18:00' },
       ],
     },
   });
@@ -95,17 +95,17 @@ export default function TimeIntervals() {
 
   const { fields } = useFieldArray({
     control,
-    name: "intervals",
+    name: 'intervals',
   });
 
-  const intervals = watch("intervals");
+  const intervals = watch('intervals');
 
   async function handleSetTimeIntervals(data: any) {
     const formData = data as TimeIntervalsFormOutput;
 
-    await api.post("/users/time-intervals", formData.intervals);
+    await api.post('/users/time-intervals', formData.intervals);
 
-    await router.push("/register/update-profile");
+    await router.push('/register/update-profile');
   }
 
   console.log(errors);

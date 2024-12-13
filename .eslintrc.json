@@ -2,5 +2,12 @@
   "extends": [
     "next/core-web-vitals",
     "@rocketseat/eslint-config/react"
-  ]
+  ],
+  "plugins": ["prettier"],
+  "rules": {
+    "camelcase": "off",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-explicit-any": ["off"],
+    "endOfLine": "auto"
+  }
 }

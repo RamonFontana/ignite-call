@@ -1,16 +1,16 @@
-import { useQuery } from "@tanstack/react-query";
-import dayjs from "dayjs";
-import { useRouter } from "next/router";
-import { useState } from "react";
+import { useQuery } from '@tanstack/react-query';
+import dayjs from 'dayjs';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
 import {
   Container,
   TimePicker,
   TimePickerHeader,
   TimePickerItem,
   TimePickerList,
-} from "./styles";
-import { api } from "@/lib/axios";
-import { Calendar } from "@/components/Calendar";
+} from './styles';
+import { api } from '@/lib/axios';
+import { Calendar } from '@/components/Calendar';
 
 interface Availability {
   possibleTimes: number[];
@@ -29,17 +29,17 @@ export function CalendarStep({ onSelectDateTime }: CalendarStepProps) {
   const isDateSelected = !!selectedDate;
   const username = String(router.query.username);
 
-  const weekDay = selectedDate ? dayjs(selectedDate).format("dddd") : null;
+  const weekDay = selectedDate ? dayjs(selectedDate).format('dddd') : null;
   const describedDate = selectedDate
-    ? dayjs(selectedDate).format("DD[ de ]MMMM")
+    ? dayjs(selectedDate).format('DD[ de ]MMMM')
     : null;
 
   const selectedDateWithoutTime = selectedDate
-    ? dayjs(selectedDate).format("YYYY-MM-DD")
+    ? dayjs(selectedDate).format('YYYY-MM-DD')
     : null;
 
   const { data: availability } = useQuery<Availability>(
-    ["availability", selectedDateWithoutTime],
+    ['availability', selectedDateWithoutTime],
     async () => {
       const response = await api.get(`/users/${username}/availability`, {
         params: {
@@ -51,13 +51,13 @@ export function CalendarStep({ onSelectDateTime }: CalendarStepProps) {
     },
     {
       enabled: !!selectedDate,
-    }
+    },
   );
 
   function handleSelectTime(hour: number) {
     const dateWithTime = dayjs(selectedDate)
-      .set("hour", hour)
-      .startOf("hour")
+      .set('hour', hour)
+      .startOf('hour')
       .toDate();
 
     onSelectDateTime(dateWithTime);
@@ -81,7 +81,7 @@ export function CalendarStep({ onSelectDateTime }: CalendarStepProps) {
                   onClick={() => handleSelectTime(hour)}
                   disabled={!availability.availableTimes.includes(hour)}
                 >
-                  {String(hour).padStart(2, "0")}:00h
+                  {String(hour).padStart(2, '0')}:00h
                 </TimePickerItem>
               );
             })}
